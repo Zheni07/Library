@@ -1,0 +1,86 @@
+#  Biblioteka2 – Управление на библиотека (Windows Forms)
+
+Проектът **Biblioteka2** представлява проста Windows Forms апликация за управление на библиотека. Позволява добавяне, редактиране, изтриване и обновяване на книги, както и визуализация на списък с всички въведени заглавия.
+
+---
+
+##  Функционалности
+
+-  Добавяне на нова книга  
+-  Редактиране на съществуваща книга  
+-  Изтриване на маркирана книга  
+-  Обновяване на данните на екрана  
+-  Смяна на тема (светла / тъмна)  
+-  Списък с всички книги (ListBox)  
+-  Проверка за валидност на входните данни  
+
+---
+
+## Използвани технологии
+
+- C#
+- Windows Forms (.NET)
+- BindingList\<Book\>
+- INotifyPropertyChanged (за автоматично обновяване на интерфейса)
+
+---
+
+##  Структура на проекта
+
+- **Form1.cs**
+  - Основна форма на приложението
+  - Управлява потребителския интерфейс и логиката
+- **Book.cs**
+  - Клас, описващ една книга:
+    - Title (Заглавие)
+    - Author (Автор)
+    - Genre (Жанр)
+    - IsAvailable (Наличност)
+
+---
+
+##  Клас Book (пример)
+
+```csharp
+public class Book : INotifyPropertyChanged
+{
+    private string title;
+    private string author;
+    private string genre;
+    private bool isAvailable;
+
+    public string Title
+    {
+        get => title;
+        set { title = value; OnPropertyChanged("Title"); }
+    }
+
+    public string Author
+    {
+        get => author;
+        set { author = value; OnPropertyChanged("Author"); }
+    }
+
+    public string Genre
+    {
+        get => genre;
+        set { genre = value; OnPropertyChanged("Genre"); }
+    }
+
+    public bool IsAvailable
+    {
+        get => isAvailable;
+        set { isAvailable = value; OnPropertyChanged("IsAvailable"); }
+    }
+
+    public override string ToString()
+    {
+        return $"{Title} - {Author} ({Genre}) {(IsAvailable ? "[✓]" : "[✗]")}";
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+}
